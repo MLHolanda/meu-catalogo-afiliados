@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Ofertas selecionadas — Catálogo de afiliado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: linear-gradient(160deg, #f0f4f8 0%, #e8eef4 45%, #f5f7fa 100%);
+            padding: 2rem 1rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* cabeçalho e formulário de captura */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            font-size: clamp(1.65rem, 4vw, 2.15rem);
+            color: #0f1f2e;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        .header p {
+            color: #2c4c6e;
+            font-size: 1.1rem;
+            margin-bottom: 0.65rem;
+            max-width: 36rem;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.55;
+        }
+        .header-trust {
+            font-size: 0.82rem;
+            color: #5a7a94;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .lead-form {
+            background: #fff;
+            max-width: 520px;
+            margin: 0 auto 2rem auto;
+            padding: 1.35rem 1.25rem;
+            border-radius: 48px;
+            box-shadow: 0 4px 6px rgba(15, 31, 46, 0.04), 0 16px 40px rgba(15, 31, 46, 0.08);
+            border: 1px solid rgba(255, 107, 0, 0.12);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        .lead-form input {
+            flex: 2;
+            min-width: 180px;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #ccc;
+            border-radius: 40px;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.2s;
+        }
+        .lead-form input:focus {
+            border-color: #ff6b00;
+            box-shadow: 0 0 0 2px rgba(255,107,0,0.2);
+        }
+        .lead-form button {
+            background: linear-gradient(135deg, #ff7a1a 0%, #ff6b00 45%, #e85a00 100%);
+            color: white;
+            border: none;
+            padding: 0.9rem 1.85rem;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 1rem;
+            box-shadow: 0 4px 14px rgba(255, 107, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            letter-spacing: 0.02em;
+        }
+        .lead-form button:hover {
+            background: linear-gradient(135deg, #ff862e 0%, #ff7514 50%, #ef6400 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(255, 107, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        .lead-form button:active {
+            transform: translateY(0);
+        }
+        /* filtros */
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+        }
+        .filter-btn {
+            background: #e9ecef;
+            border: 1px solid transparent;
+            padding: 0.6rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            color: #1e4663;
+        }
+        .filter-btn:hover:not(.active) {
+            background: #dee2e6;
+            transform: translateY(-1px);
+        }
+        .filter-btn.active {
+            background: linear-gradient(135deg, #ff7a1a 0%, #ff6b00 100%);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 14px rgba(255, 107, 0, 0.35);
+        }
+        /* grid de produtos */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.8rem;
+        }
+        .card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            backdrop-filter: blur(2px);
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.12);
+        }
+        .card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background: #f1f3f5;
+        }
+        .card-content {
+            padding: 1.2rem;
+        }
+        .brand-badge {
+            display: inline-block;
+            background: #eef2ff;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #1e4663;
+            margin-bottom: 0.6rem;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e2f3f;
+        }
+        .card-price {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #ff6b00;
+            margin: 0.6rem 0;
+        }
+        .btn-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e3a52 0%, #152a3d 100%);
+            color: #fff;
+            text-decoration: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 40px;
+            font-weight: 700;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(21, 42, 61, 0.35);
+            letter-spacing: 0.03em;
+            font-size: 0.95rem;
+        }
+        .btn-link:hover {
+            background: linear-gradient(135deg, #ff7a1a 0%, #ff6b00 50%, #e85a00 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 0, 0.45);
+        }
+        .btn-link:active {
+            transform: translateY(0);
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: #5b7c9c;
+            font-size: 0.85rem;
+        }
+        .footer-note {
+            margin-bottom: 0.75rem;
+        }
+        .footer-legal {
+            margin: 0;
+        }
+        .footer-link {
+            background: none;
+            border: none;
+            padding: 0;
+            font: inherit;
+            color: #1e4663;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .footer-link:hover,
+        .footer-link:focus-visible {
+            color: #ff6b00;
+            outline: none;
+        }
+        /* modal política de privacidade */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: rgba(8, 12, 20, 0.78);
+            backdrop-filter: blur(6px);
+        }
+        .modal-overlay.is-open {
+            display: flex;
+        }
+        body.modal-open {
+            overflow: hidden;
+        }
+        .modal-dialog {
+            width: 100%;
+            max-width: 560px;
+            max-height: min(85vh, 640px);
+            background: #fff;
+            border-radius: 28px;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.18);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.1rem 1.25rem;
+            border-bottom: 1px solid #e9ecef;
+            flex-shrink: 0;
+        }
+        .modal-header h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1a2c3e;
+            margin: 0;
+        }
+        .modal-close {
+            flex-shrink: 0;
+            width: 2.25rem;
+            height: 2.25rem;
+            border: none;
+            border-radius: 50%;
+            background: #f1f3f5;
+            color: #1a2c3e;
+            font-size: 1.35rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .modal-close:hover,
+        .modal-close:focus-visible {
+            background: #ff6b00;
+            color: #fff;
+            outline: none;
+        }
+        .modal-body {
+            padding: 1rem 1.25rem 1.35rem;
+            overflow-y: auto;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: #2c4c6e;
+        }
+        .modal-body p {
+            margin-bottom: 0.85rem;
+        }
+        .modal-body p:last-child {
+            margin-bottom: 0;
+        }
+        @media (max-width: 600px) {
+            .lead-form {
+                flex-direction: column;
+                border-radius: 28px;
+            }
+            .lead-form input, .lead-form button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🎯 Ofertas selecionadas para você pagar menos</h1>
+        <p>Curadoria de produtos com preço justo nas lojas que você já confia — um clique e você compra com segurança.</p>
+        <p class="header-trust">Ofertas atualizadas · Links oficiais de parceiros</p>
+    </div>
+
+    <!-- Formulário interativo de captura de lead -->
+    <div class="lead-form">
+        <input type="email" id="emailLead" placeholder="Digite seu e-mail para receber alertas" required>
+        <input type="text" id="whatsLead" placeholder="WhatsApp com DDD (opcional)">
+        <button id="saveLeadBtn">Quero receber as melhores ofertas primeiro</button>
+    </div>
+    <div id="leadMessage" style="text-align:center; margin-top:-1rem; margin-bottom:1.5rem; font-size:0.9rem;"></div>
+
+    <!-- Filtros dinâmicos -->
+    <div class="filters" id="filterContainer">
+        <button class="filter-btn active" data-brand="all">Todos</button>
+        <button class="filter-btn" data-brand="Shopee">🛍️ Shopee</button>
+        <button class="filter-btn" data-brand="Magalu">📱 Magalu</button>
+        <button class="filter-btn" data-brand="Outros">✨ Outros</button>
+    </div>
+
+    <!-- Grid de produtos -->
+    <div class="products-grid" id="productsGrid"></div>
+    <footer>
+        <p class="footer-note">💡 Toque em &quot;Ver oferta&quot; no produto desejado — você será levado à loja parceira. Preços e estoque podem mudar a qualquer momento.</p>
+        <p class="footer-legal">
+            <button type="button" class="footer-link" id="privacyOpenBtn" aria-haspopup="dialog" aria-controls="privacyModal" aria-expanded="false">Política de Privacidade</button>
+        </p>
+    </footer>
+</div>
+
+<div id="privacyModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle" aria-hidden="true" hidden>
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h2 id="privacyModalTitle">Política de Privacidade</h2>
+            <button type="button" class="modal-close" id="privacyCloseBtn" aria-label="Fechar política de privacidade">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Esta página é um catálogo de ofertas. Ao informar seu e-mail ou WhatsApp no formulário acima, você autoriza o uso desses dados apenas para envio de comunicações sobre ofertas e novidades relacionadas a este site, conforme a legislação aplicável (incluindo a LGPD).</p>
+            <p>Não vendemos nem compartilhamos seus dados com terceiros para fins não relacionados a essas comunicações. Você pode solicitar acesso, correção ou exclusão dos seus dados entrando em contato pelo canal indicado pelo responsável pela página.</p>
+            <p>Ao clicar nos links de compra dos produtos, você pode ser redirecionado para lojas parceiras (por exemplo, marketplaces), que possuem políticas de privacidade próprias. Recomendamos a leitura dos termos de cada loja antes da compra.</p>
+            <p>Esta política pode ser atualizada periodicamente. A data da última revisão pode ser indicada abaixo quando você personalizar o texto.</p>
+            <p><strong>Última atualização:</strong> março de 2026</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ========================
+    // LISTA DE PRODUTOS (SUBSTITUA PELOS SEUS LINKS DE AFILIADO)
+    // ========================
+    const produtos = [
+    {
+        id: 1,
+        nome: "🧱 Sapateira Vertical com Portas Organizadora",
+        marca: "Shopee",
+        preco: "R$ 155,99 - R$ 222,99",
+        imagem: "https://placehold.co/600x400?text=Sapateira",
+        link: "https://s.shopee.com.br/1gEAS4yvOZ"
+    },
+    {
+        id: 2,
+        nome: "💡 Arandela de Parede Moderna Decorativa",
+        marca: "Shopee",
+        preco: "R$ 34,19",
+        imagem: "https://placehold.co/600x400?text=Arandela",
+        link: "https://s.shopee.com.br/15wT4zFnq"
+    },
+    {
+        id: 3,
+        nome: "👕 Kit Camisetas Casal Brasil Hexa 2026",
+        marca: "Shopee",
+        preco: "R$ 54,95",
+        imagem: "https://placehold.co/600x400?text=Camiseta+Brasil",
+        link: "https://s.shopee.com.br/7VBxOtJ2TY"
+    },
+    {
+        id: 4,
+        nome: "📱 Ofertas oficiais Magalu",
+        marca: "Magalu",
+        preco: "Confira promoções",
+        imagem: "https://placehold.co/600x400?text=Magalu",
+        link: "https://www.magazinevoce.com.br/magazinemariolucas/"
+    }
+
+    ];
+
+    let currentFilter = "all";
+
+    // Renderiza os cards baseado no filtro atual
+    function renderProducts() {
+        const filtered = currentFilter === "all" 
+            ? produtos 
+            : produtos.filter(p => p.marca === currentFilter);
+        
+        const grid = document.getElementById("productsGrid");
+        if (filtered.length === 0) {
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem; color:#5a7a94;">Nenhum item nesta categoria no momento. Escolha outro filtro acima.</div>`;
+            return;
+        }
+        
+        grid.innerHTML = filtered.map(prod => `
+            <div class="card">
+                <img class="card-img" src="${prod.imagem}" alt="${prod.nome}" loading="lazy">
+                <div class="card-content">
+                    <span class="brand-badge">${prod.marca}</span>
+                    <div class="card-title">${prod.nome}</div>
+                    <div class="card-price">${prod.preco}</div>
+                    <a href="${prod.link}" target="_blank" rel="noopener noreferrer" class="btn-link">Ver oferta na loja →</a>
+                </div>
+            </div>=
+        `).join("");
+    }
+
+    // Função para salvar lead (simulação - aqui você pode integrar com Google Sheets, API ou salvar localmente)
+    function saveLead(email, whatsapp) {
+        if (!email || email.trim() === "") {
+            document.getElementById("leadMessage").innerHTML = "⚠️ Informe um e-mail válido para receber os alertas.";
+            document.getElementById("leadMessage").style.color = "#d9534f";
+            setTimeout(() => {
+                document.getElementById("leadMessage").innerHTML = "";
+            }, 3000);
+            return false;
+        }
+        
+        // Aqui você pode enviar os dados para seu backend, ou armazenar no localStorage
+        // Exemplo: localStorage + console para você coletar depois
+        const leads = JSON.parse(localStorage.getItem("leads_afiliado") || "[]");
+        leads.push({ email, whatsapp, data: new Date().toISOString() });
+        localStorage.setItem("leads_afiliado", JSON.stringify(leads));
+        
+        document.getElementById("leadMessage").innerHTML = "✅ Pronto! Em breve você recebe ofertas e quedas de preço no seu e-mail.";
+        document.getElementById("leadMessage").style.color = "#28a745";
+        document.getElementById("emailLead").value = "";
+        document.getElementById("whatsLead").value = "";
+        
+        setTimeout(() => {
+            document.getElementById("leadMessage").innerHTML = "";
+        }, 4000);
+        
+        console.log("Lead capturado:", { email, whatsapp }); // útil para você acompanhar
+        return true;
+    }
+
+    // Evento do botão de lead
+    document.getElementById("saveLeadBtn").addEventListener("click", () => {
+        const email = document.getElementById("emailLead").value;
+        const whatsapp = document.getElementById("whatsLead").value;
+        saveLead(email, whatsapp);
+    });
+
+    // Configurar filtros
+    function setupFilters() {
+        const btns = document.querySelectorAll(".filter-btn");
+        btns.forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const brand = btn.getAttribute("data-brand");
+                currentFilter = brand === "all" ? "all" : brand;
+                
+                // atualizar classe ativa nos botões
+                btns.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                
+                renderProducts();
+            });
+        });
+    }
+    
+    // Modal Política de Privacidade (acessível: ESC, overlay, foco)
+    function setupPrivacyModal() {
+        const modal = document.getElementById("privacyModal");
+        const openBtn = document.getElementById("privacyOpenBtn");
+        const closeBtn = document.getElementById("privacyCloseBtn");
+        if (!modal || !openBtn || !closeBtn) return;
+
+        let lastFocus = null;
+
+        function openModal() {
+            lastFocus = document.activeElement;
+            modal.removeAttribute("hidden");
+            modal.classList.add("is-open");
+            modal.setAttribute("aria-hidden", "false");
+            openBtn.setAttribute("aria-expanded", "true");
+            document.body.classList.add("modal-open");
+            closeBtn.focus();
+        }
+
+        function closeModal() {
+            modal.classList.remove("is-open");
+            modal.setAttribute("aria-hidden", "true");
+            modal.setAttribute("hidden", "");
+            openBtn.setAttribute("aria-expanded", "false");
+            document.body.classList.remove("modal-open");
+            if (lastFocus && typeof lastFocus.focus === "function") {
+                lastFocus.focus();
+            }
+        }
+
+        openBtn.addEventListener("click", () => openModal());
+
+        closeBtn.addEventListener("click", () => closeModal());
+
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && modal.classList.contains("is-open")) {
+                closeModal();
+            }
+        });
+    }
+
+    // inicializar
+    function init() {
+        renderProducts();
+        setupFilters();
+        setupPrivacyModal();
+    }
+    
+    init();
+</script>
+</body>
+</html>
